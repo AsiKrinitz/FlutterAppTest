@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:test_app/database_helper.dart';
+import 'package:test_app/login.dart';
 import 'package:test_app/models/userModel.dart';
 
 class SignupPage extends StatefulWidget {
@@ -238,6 +239,11 @@ class _SignupPageState extends State<SignupPage> {
 
                           db.signup(user).whenComplete(() {
                             print("data has succussfully stored on db");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
                           });
                         }
                       },

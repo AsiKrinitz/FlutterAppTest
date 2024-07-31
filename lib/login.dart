@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/database_helper.dart';
+import 'package:test_app/home.dart';
 import 'package:test_app/models/userModel.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
-  final emailContorller = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 50,
                   ),
                   TextFormField(
-                    controller: emailContorller,
+                    controller: emailController,
                     decoration: InputDecoration(
                       label: Text("email"),
                       hintText: "your email",
@@ -70,21 +71,69 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        if (formKey.currentState!.validate()) {
-                          final db = DatabaseHelper();
-                          UserModel user = UserModel(
-                              email: emailContorller.text,
-                              password: passwordController.text);
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        final db = DatabaseHelper();
+                        UserModel user = UserModel(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+
+                        try {
                           var response = await db.login(user);
                           if (response == true) {
-                            print("logged in succussfully");
+                            print("logged in successfully");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                            );
                           } else {
-                            print("some went worng...");
+                            print("something went wrong...");
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Login Failed"),
+                                  content: Text(
+                                      "The email or password is incorrect. Please try again."),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: Text("OK"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           }
+                        } catch (e) {
+                          print("Error: $e");
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Error"),
+                                content: Text(
+                                    "An unexpected error occurred. Please try again later."),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
-                      },
-                      child: Text("Login"))
+                      }
+                    },
+                    child: Text("Login"),
+                  )
                 ],
               ),
             )),
