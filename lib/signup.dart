@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:test_app/database_helper.dart';
+import 'package:test_app/models/userModel.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage();
@@ -85,6 +87,24 @@ class _SignupPageState extends State<SignupPage> {
                       FilteringTextInputFormatter.allow(RegExp(
                           r'[a-zA-Z\s]')), // Allow only letters and spaces
                     ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: nickNameController,
+                    decoration: InputDecoration(
+                      label: Text("nickName"),
+                      hintText: "Asi123",
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "this field is required";
@@ -187,25 +207,38 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    controller: pictureController,
-                    decoration: InputDecoration(
-                        label: Text("picture"),
-                        hintText: "",
-                        border: OutlineInputBorder()),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  // TextFormField(
+                  //   controller: pictureController,
+                  //   decoration: InputDecoration(
+                  //       label: Text("picture"),
+                  //       hintText: "",
+                  //       border: OutlineInputBorder()),
+                  // ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
                   SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        print("your first name is ${firstNameController.text}");
-                        print("your email is ${emailContorller.text}");
                         if (formKey.currentState!.validate()) {
                           print("form is valid");
+                          final db = DatabaseHelper();
+                          UserModel user = UserModel(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              nickName: nickNameController.text,
+                              email: emailContorller.text,
+                              password: passwordController.text,
+                              phone: phoneController.text,
+                              dateOfBirth: dateOfBirthController.text,
+                              aboutMe: aboutMeController.text,
+                              pictureUrl: "pictureUrl");
+
+                          db.signup(user).whenComplete(() {
+                            print("data has succussfully stored on db");
+                          });
                         }
                       },
                       child: Text(

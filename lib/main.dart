@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/login.dart';
+import 'package:test_app/welcome.dart';
 
 void main() {
   runApp(MyWidget());
@@ -10,6 +10,6 @@ class MyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: LoginPage());
+    return MaterialApp(home: WelcomePage());
   }
 }

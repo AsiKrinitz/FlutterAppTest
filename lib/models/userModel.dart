@@ -1,23 +1,49 @@
-class Users {
-  final int? usrId;
-  final String usrName;
-  final String usrPassword;
+import 'dart:convert';
 
-  Users({
-    this.usrId,
-    required this.usrName,
-    required this.usrPassword,
+class UserModel {
+  String? firstName;
+  String? lastName;
+  String? nickName;
+  String email;
+  String password;
+  String? phone;
+  String? dateOfBirth;
+  String? aboutMe;
+  String? pictureUrl;
+
+  UserModel({
+    this.firstName,
+    this.lastName,
+    this.nickName,
+    required this.email,
+    required this.password,
+    this.phone,
+    this.dateOfBirth,
+    this.aboutMe,
+    this.pictureUrl,
   });
 
-  factory Users.fromMap(Map<String, dynamic> json) => Users(
-        usrId: json["usrId"],
-        usrName: json["usrName"],
-        usrPassword: json["usrPassword"],
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        nickName: json["nickName"],
+        email: json["email"],
+        password: json["password"],
+        phone: json["phone"],
+        dateOfBirth: json["dateOfBirth"],
+        aboutMe: json["aboutMe"],
+        pictureUrl: json["pictureUrl"],
       );
 
-  Map<String, dynamic> toMap() => {
-        "usrId": usrId,
-        "usrName": usrName,
-        "usrPassword": usrPassword,
+  Map<String, dynamic> toJson() => {
+        "firstName": firstName,
+        "lastName": lastName,
+        "nickName": nickName,
+        "email": email,
+        "password": password,
+        "phone": phone,
+        "dateOfBirth": dateOfBirth,
+        "aboutMe": aboutMe,
+        "pictureUrl": pictureUrl,
       };
 }
