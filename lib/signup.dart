@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage();
@@ -9,9 +10,17 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final formKey = GlobalKey<FormState>();
+
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailContorller = TextEditingController();
+  final nickNameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final dateOfBirthController = TextEditingController();
+  final passwordController = TextEditingController();
+  final aboutMeController = TextEditingController();
+  final pictureController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,45 +39,200 @@ class _SignupPageState extends State<SignupPage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              Text(
-                "Signup Form",
-                style: TextStyle(
-                    fontSize: 40,
-                    color: const Color.fromARGB(255, 228, 206, 7),
-                    decoration: TextDecoration.underline),
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  Text(
+                    "Signup Form",
+                    style: TextStyle(
+                        fontSize: 40,
+                        color: const Color.fromARGB(255, 228, 206, 7),
+                        decoration: TextDecoration.underline),
+                  ),
+                  TextFormField(
+                    controller: firstNameController,
+                    decoration: InputDecoration(
+                      label: Text("first name"),
+                      hintText: "Asi",
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.text,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(
+                          r'[a-zA-Z\s]')), // Allow only letters and spaces
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: lastNameController,
+                    decoration: InputDecoration(
+                      label: Text("last name"),
+                      hintText: "last name",
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.text,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(
+                          r'[a-zA-Z\s]')), // Allow only letters and spaces
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: emailContorller,
+                    decoration: InputDecoration(
+                      label: Text("email"),
+                      hintText: "exampleEmail@gmail.com",
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      label: Text("password"),
+                      hintText: "",
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "This field is required";
+                      } else if (value.length < 5) {
+                        return "Password must be at least 5 characters long";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                        label: Text("phone"),
+                        hintText: "05212345678",
+                        border: OutlineInputBorder()),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: dateOfBirthController,
+                    decoration: InputDecoration(
+                      label: Text("date of birth"),
+                      hintText: "01/01/1990",
+                      border: OutlineInputBorder(),
+                    ),
+                    readOnly: true,
+                    onTap: () => _selectDate(context),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: aboutMeController,
+                    decoration: InputDecoration(
+                      label: Text("about me"),
+                      hintText: "tell about yourself shortly",
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 4,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "this field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: pictureController,
+                    decoration: InputDecoration(
+                        label: Text("picture"),
+                        hintText: "",
+                        border: OutlineInputBorder()),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        print("your first name is ${firstNameController.text}");
+                        print("your email is ${emailContorller.text}");
+                        if (formKey.currentState!.validate()) {
+                          print("form is valid");
+                        }
+                      },
+                      child: Text(
+                        "Submit Form",
+                        style: TextStyle(color: Colors.red),
+                      ))
+                ],
               ),
-              TextFormField(
-                controller: firstNameController,
-                decoration: InputDecoration(
-                    label: Text("first name"),
-                    hintText: "Asi",
-                    border: OutlineInputBorder()),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: emailContorller,
-                decoration: InputDecoration(
-                    label: Text("email"),
-                    hintText: "exampleEmail@gmail.com",
-                    border: OutlineInputBorder()),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    print("your first name is ${firstNameController.text}");
-                    print("your email is ${emailContorller.text}");
-                  },
-                  child: Text(
-                    "Submit Form",
-                    style: TextStyle(color: Colors.red),
-                  ))
-            ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+// allow the data picker
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        dateOfBirthController.text = "${picked.toLocal()}".split(' ')[0];
+      });
+    }
   }
 }

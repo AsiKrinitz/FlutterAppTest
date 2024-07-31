@@ -11,8 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String str = "24";
-
   @override
   Widget build(BuildContext context) {
     log("refresh");
@@ -32,18 +30,11 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(str),
             const SizedBox(
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  str = "hello";
-                });
-
-                log("str value = ${str}");
-              },
+              onPressed: () {},
               child: Text("Login"),
             ),
             ElevatedButton(
