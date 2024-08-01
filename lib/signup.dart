@@ -263,10 +263,11 @@ class _SignupPageState extends State<SignupPage> {
                     height: 10,
                   ),
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.validate() &&
                             _profileImage != null) {
                           print("form is valid");
+
                           final db = DatabaseHelper();
                           UserModel user = UserModel(
                               firstName: firstNameController.text,
@@ -280,21 +281,23 @@ class _SignupPageState extends State<SignupPage> {
                               pictureUrl: _profileImage,
                               lastEnter: DateTime.now().toString());
 
-                          db.signup(user).whenComplete(
-                            () {
-                              print("data has succussfully stored on db");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("you signed up successfully"),
-                                ),
-                              );
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                              );
-                            },
-                          );
+                          final result = await db.signup(user);
+
+                          if (result == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('You signed up successfully')),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result)),
+                            );
+                          }
                         } else if (_profileImage == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

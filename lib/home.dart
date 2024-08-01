@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/database_helper.dart';
+import 'package:test_app/login.dart';
 import 'package:test_app/models/userModel.dart';
 import 'package:test_app/userProfileWidget.dart';
 
@@ -40,6 +41,19 @@ class _HomePageState extends State<HomePage> {
               decoration: TextDecoration.underline,
               fontWeight: FontWeight.w700),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              // Perform logout and navigate to login page
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false, // Remove all previous routes
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [

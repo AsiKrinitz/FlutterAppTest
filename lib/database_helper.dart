@@ -11,7 +11,7 @@ class DatabaseHelper {
       firstName TEXT NOT NULL, 
       lastName TEXT NOT NULL, 
       nickName TEXT NOT NULL, 
-      email TEXT NOT NULL, 
+      email TEXT NOT NULL UNIQUE, 
       password TEXT NOT NULL, 
       phone TEXT NOT NULL, 
       dateOfBirth TEXT NOT NULL, 
@@ -36,9 +36,27 @@ class DatabaseHelper {
     });
   }
 
-  Future<int> signup(UserModel user) async {
+  Future<bool> isEmailRegistered(String email) async {
     final Database db = await initDB();
-    return db.insert("users", user.toJson());
+    final List<Map<String, dynamic>> result = await db.query(
+      'users',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+    return result.isNotEmpty;
+  }
+
+  Future<String?> signup(UserModel user) async {
+    final Database db = await initDB();
+
+    // Check if email is already registered
+    if (await isEmailRegistered(user.email)) {
+      return 'This email is already registered. Please use another one.';
+    } else {
+      // Insert new user
+      await db.insert("users", user.toJson());
+      return null;
+    }
   }
 
   // Future<bool> login2(UserModel user) async {
