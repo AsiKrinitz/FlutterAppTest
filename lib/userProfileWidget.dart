@@ -30,7 +30,7 @@ class ProfileWidget extends StatelessWidget {
           Text(user.dateOfBirth ?? ""),
           Text(user.aboutMe ?? ""),
           // Text(user.pictureUrl ?? ""),
-          Text(user.createdAt.toString()),
+          // Text(user.createdAt.toString()),
           Text(user.lastEnter.toString())
         ],
       ),

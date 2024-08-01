@@ -5,8 +5,22 @@ import "package:test_app/models/userModel.dart";
 class DatabaseHelper {
   final asiDB = "asiDB";
 
-  String user =
-      "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT NOT NULL, lastName TEXT NOT NULL, nickName TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, phone TEXT NOT NULL, dateOfBirth TEXT NOT NULL, aboutMe TEXT NOT NULL, pictureUrl TEXT NOT NULL, lastEnter TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)";
+  String user = """
+    CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      firstName TEXT NOT NULL, 
+      lastName TEXT NOT NULL, 
+      nickName TEXT NOT NULL, 
+      email TEXT NOT NULL, 
+      password TEXT NOT NULL, 
+      phone TEXT NOT NULL, 
+      dateOfBirth TEXT NOT NULL, 
+      aboutMe TEXT NOT NULL, 
+      pictureUrl BLOB, 
+      lastEnter TEXT NOT NULL, 
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  """;
 
   Future<Database> initDB() async {
     final databasePath = await getDatabasesPath();
@@ -63,7 +77,11 @@ class DatabaseHelper {
 
   Future<List<UserModel>> getAllUsers() async {
     final Database db = await initDB();
-    List<Map<String, Object?>> result = await db.query("users");
+    // Order by createdAt DESC to get the most recent users first
+    List<Map<String, Object?>> result = await db.query(
+      "users",
+      orderBy: "createdAt DESC",
+    );
     return result.map((user) => UserModel.fromJson(user)).toList();
   }
 

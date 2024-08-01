@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 // import 'dart:ffi';
 
 class UserModel {
@@ -11,8 +12,8 @@ class UserModel {
   String? phone;
   String? dateOfBirth;
   String? aboutMe;
-  String? pictureUrl;
-  String? createdAt;
+  Uint8List? pictureUrl; // Change type to Uint8List to store image as BLOB
+  // String? createdAt;
   String? lastEnter;
 
   UserModel(
@@ -26,7 +27,7 @@ class UserModel {
       this.dateOfBirth,
       this.aboutMe,
       this.pictureUrl,
-      this.createdAt,
+      // this.createdAt,
       this.lastEnter});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -39,8 +40,10 @@ class UserModel {
         phone: json["phone"],
         dateOfBirth: json["dateOfBirth"],
         aboutMe: json["aboutMe"],
-        pictureUrl: json["pictureUrl"],
-        createdAt: json["createdAt"],
+        pictureUrl: json["pictureUrl"] != null
+            ? Base64Decoder().convert(json["pictureUrl"])
+            : null,
+        // createdAt: json["createdAt"],
         lastEnter: json["lastEnter"],
       );
 
@@ -54,8 +57,8 @@ class UserModel {
         "phone": phone,
         "dateOfBirth": dateOfBirth,
         "aboutMe": aboutMe,
-        "pictureUrl": pictureUrl,
-        "createdAt": createdAt,
+        "pictureUrl":
+            pictureUrl != null ? Base64Encoder().convert(pictureUrl!) : null,
         "lastEnter": lastEnter
       };
 }
