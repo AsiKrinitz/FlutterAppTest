@@ -82,7 +82,12 @@ class _LoginPageState extends State<LoginPage> {
                         try {
                           var response = await db.login(user);
                           if (response == true) {
-                            print("logged in successfully");
+                            print("logged in in successfully");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("logged in successfully"),
+                              ),
+                            );
                             Navigator.push(
                               context,
                               MaterialPageRoute(

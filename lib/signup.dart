@@ -235,16 +235,24 @@ class _SignupPageState extends State<SignupPage> {
                               phone: phoneController.text,
                               dateOfBirth: dateOfBirthController.text,
                               aboutMe: aboutMeController.text,
-                              pictureUrl: "pictureUrl");
+                              pictureUrl: "pictureUrl",
+                              lastEnter: DateTime.now().toString());
 
-                          db.signup(user).whenComplete(() {
-                            print("data has succussfully stored on db");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
-                            );
-                          });
+                          db.signup(user).whenComplete(
+                            () {
+                              print("data has succussfully stored on db");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("you signed up successfully"),
+                                ),
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
+                            },
+                          );
                         }
                       },
                       child: Text(

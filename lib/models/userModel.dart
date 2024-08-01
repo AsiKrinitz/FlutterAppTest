@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 class UserModel {
+  int? id;
   String? firstName;
   String? lastName;
   String? nickName;
@@ -10,20 +12,25 @@ class UserModel {
   String? dateOfBirth;
   String? aboutMe;
   String? pictureUrl;
+  String? createdAt;
+  String? lastEnter;
 
-  UserModel({
-    this.firstName,
-    this.lastName,
-    this.nickName,
-    required this.email,
-    required this.password,
-    this.phone,
-    this.dateOfBirth,
-    this.aboutMe,
-    this.pictureUrl,
-  });
+  UserModel(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.nickName,
+      required this.email,
+      required this.password,
+      this.phone,
+      this.dateOfBirth,
+      this.aboutMe,
+      this.pictureUrl,
+      this.createdAt,
+      this.lastEnter});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        id: json["id"],
         firstName: json["firstName"],
         lastName: json["lastName"],
         nickName: json["nickName"],
@@ -33,9 +40,12 @@ class UserModel {
         dateOfBirth: json["dateOfBirth"],
         aboutMe: json["aboutMe"],
         pictureUrl: json["pictureUrl"],
+        createdAt: json["createdAt"],
+        lastEnter: json["lastEnter"],
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "firstName": firstName,
         "lastName": lastName,
         "nickName": nickName,
@@ -45,5 +55,7 @@ class UserModel {
         "dateOfBirth": dateOfBirth,
         "aboutMe": aboutMe,
         "pictureUrl": pictureUrl,
+        "createdAt": createdAt,
+        "lastEnter": lastEnter
       };
 }
