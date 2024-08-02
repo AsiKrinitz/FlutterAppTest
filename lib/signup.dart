@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:test_app/database_helper.dart';
 import 'package:test_app/login.dart';
 import 'package:test_app/models/userModel.dart';
@@ -24,6 +25,20 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   final aboutMeController = TextEditingController();
   final pictureController = TextEditingController();
+  Uint8List? _profileImage;
+
+  /// Pick the image from gallery and store in [_profileImage] as bytes
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      setState(() {
+        _profileImage = bytes;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +223,32 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 10,
                   ),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: _profileImage != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.memory(
+                                _profileImage!,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : const Center(
+                              child: Text(
+                                'Pick your profile image',
+                                style: TextStyle(color: Colors.black45),
+                              ),
+                            ),
+                    ),
+                  ),
+
                   // TextFormField(
                   //   controller: pictureController,
                   //   decoration: InputDecoration(
@@ -222,9 +263,11 @@ class _SignupPageState extends State<SignupPage> {
                     height: 10,
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
+                      onPressed: () async {
+                        if (formKey.currentState!.validate() &&
+                            _profileImage != null) {
                           print("form is valid");
+
                           final db = DatabaseHelper();
                           UserModel user = UserModel(
                               firstName: firstNameController.text,
@@ -235,28 +278,35 @@ class _SignupPageState extends State<SignupPage> {
                               phone: phoneController.text,
                               dateOfBirth: dateOfBirthController.text,
                               aboutMe: aboutMeController.text,
-                              pictureUrl: "pictureUrl",
-                              createdAt: DateTime.now().toString(),
+                              pictureUrl: _profileImage,
                               lastEnter: DateTime.now().toString());
 
-                          db.signup(user).whenComplete(
-                            () {
-                              print("data has succussfully stored on db");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("you signed up successfully"),
-                                ),
-                              );
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                              );
-                            },
+                          final result = await db.signup(user);
+
+                          if (result == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('You signed up successfully')),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result)),
+                            );
+                          }
+                        } else if (_profileImage == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Profile image is required"),
+                            ),
                           );
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Submit Form",
                         style: TextStyle(color: Colors.red),
                       ))

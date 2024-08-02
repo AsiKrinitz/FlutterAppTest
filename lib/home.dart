@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/database_helper.dart';
+import 'package:test_app/login.dart';
 import 'package:test_app/models/userModel.dart';
 import 'package:test_app/userProfileWidget.dart';
 
@@ -40,6 +41,19 @@ class _HomePageState extends State<HomePage> {
               decoration: TextDecoration.underline,
               fontWeight: FontWeight.w700),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              // Perform logout and navigate to login page
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false, // Remove all previous routes
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -81,11 +95,24 @@ class _HomePageState extends State<HomePage> {
                           child: Card(
                             child: ListTile(
                               title: Text(users[index].email),
-                              leading: CircleAvatar(
-                                radius: 30,
-                                child: Image.network(
-                                    "https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest/scale-to-width-down/1200?cb=20210223094656"),
+                              leading: ClipOval(
+                                child: Container(
+                                  width: 50, // Circle diameter
+                                  height: 50, // Circle diameter
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: MemoryImage(user.pictureUrl!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
+                              // leading: CircleAvatar(
+                              //   radius: 30,
+                              //   child: Image.network(
+                              //       "https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest/scale-to-width-down/1200?cb=20210223094656"),
+                              // ),
                               subtitle: Text(users[index].nickName ?? ""),
                               trailing: Text("Age: $age"),
                             ),

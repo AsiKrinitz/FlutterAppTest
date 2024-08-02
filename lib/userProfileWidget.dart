@@ -56,8 +56,8 @@ class ProfileWidget extends StatelessWidget {
                     _buildInfoRow(
                         Icons.cake, "Date of Birth", user.dateOfBirth ?? ""),
                     _buildInfoRow(Icons.info, "About Me", user.aboutMe ?? ""),
-                    _buildInfoRow(Icons.calendar_today, "Created At",
-                        _formatDate(user.createdAt ?? "")),
+                    // _buildInfoRow(Icons.calendar_today, "Created At",
+                    //     _formatDate(user.createdAt ?? "")),
                     _buildInfoRow(Icons.login, "Last Enter",
                         _formatDate(user.lastEnter ?? "")),
                   ],

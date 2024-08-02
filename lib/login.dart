@@ -88,10 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                                 content: Text("logged in successfully"),
                               ),
                             );
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomePage()),
+                              (Route<dynamic> route) => false,
                             );
                           } else {
                             print("something went wrong...");
@@ -99,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text("Login Failed"),
-                                  content: Text(
+                                  title: const Text("Login Failed"),
+                                  content: const Text(
                                       "The email or password is incorrect. Please try again."),
                                   actions: <Widget>[
                                     ElevatedButton(
