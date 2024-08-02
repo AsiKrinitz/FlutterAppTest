@@ -248,68 +248,80 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                     ),
                   ),
-
-                  // TextFormField(
-                  //   controller: pictureController,
-                  //   decoration: InputDecoration(
-                  //       label: Text("picture"),
-                  //       hintText: "",
-                  //       border: OutlineInputBorder()),
-                  // ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
                   SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        if (formKey.currentState!.validate() &&
-                            _profileImage != null) {
-                          print("form is valid");
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        print("form is valid");
 
-                          final db = DatabaseHelper();
-                          UserModel user = UserModel(
-                              firstName: firstNameController.text,
-                              lastName: lastNameController.text,
-                              nickName: nickNameController.text,
-                              email: emailContorller.text,
-                              password: passwordController.text,
-                              phone: phoneController.text,
-                              dateOfBirth: dateOfBirthController.text,
-                              aboutMe: aboutMeController.text,
-                              pictureUrl: _profileImage,
-                              lastEnter: DateTime.now().toString());
+                        final db = DatabaseHelper();
+                        UserModel user = UserModel(
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                            nickName: nickNameController.text,
+                            email: emailContorller.text,
+                            password: passwordController.text,
+                            phone: phoneController.text,
+                            dateOfBirth: dateOfBirthController.text,
+                            aboutMe: aboutMeController.text,
+                            pictureUrl: _profileImage,
+                            lastEnter: DateTime.now().toString());
 
-                          final result = await db.signup(user);
+                        final result = await db.signup(user);
 
-                          if (result == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text('You signed up successfully')),
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(result)),
-                            );
-                          }
-                        } else if (_profileImage == null) {
+                        if (result == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Profile image is required"),
-                            ),
+                            SnackBar(
+                                content: Text('You signed up successfully')),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(result)),
                           );
                         }
-                      },
-                      child: const Text(
-                        "Submit Form",
-                        style: TextStyle(color: Colors.red),
-                      ))
+                      }
+                    },
+                    child: const Text(
+                      "Submit Form",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "already have an account? ",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return LoginPage();
+                              },
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "login now",
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 5, 83, 148),
+                              fontSize: 18),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
