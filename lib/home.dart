@@ -95,24 +95,36 @@ class _HomePageState extends State<HomePage> {
                           child: Card(
                             child: ListTile(
                               title: Text(users[index].email),
-                              leading: ClipOval(
-                                child: Container(
-                                  width: 50, // Circle diameter
-                                  height: 50, // Circle diameter
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: MemoryImage(user.pictureUrl!),
-                                      fit: BoxFit.cover,
+                              leading: (user.pictureUrl != null)
+                                  ? ClipOval(
+                                      child: Container(
+                                        width: 80, // Circle diameter
+                                        height: 80, // Circle diameter
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image:
+                                                MemoryImage(user.pictureUrl!),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : ClipOval(
+                                      child: Container(
+                                        width: 80, // Circle diameter
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                              'lib/assets/goodLife.jpg',
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              // leading: CircleAvatar(
-                              //   radius: 30,
-                              //   child: Image.network(
-                              //       "https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest/scale-to-width-down/1200?cb=20210223094656"),
-                              // ),
                               subtitle: Text(users[index].nickName ?? ""),
                               trailing: Text("Age: $age"),
                             ),

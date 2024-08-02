@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:test_app/login.dart';
 import 'package:test_app/models/userModel.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -19,17 +20,53 @@ class ProfileWidget extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              // Perform logout and navigate to login page
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false, // Remove all previous routes
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: user.pictureUrl != null
-                  ? NetworkImage(user.pictureUrl!)
-                  : AssetImage('assets/default_avatar.png') as ImageProvider,
-            ),
+            (user.pictureUrl != null)
+                ? ClipOval(
+                    child: Container(
+                      width: 120, // Circle diameter
+                      height: 120, // Circle diameter
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: MemoryImage(user.pictureUrl!),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  )
+                : ClipOval(
+                    child: Container(
+                      width: 120, // Circle diameter
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'lib/assets/goodLife.jpg',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
             SizedBox(height: 20),
             Text(
               user.nickName ?? "",
@@ -64,6 +101,10 @@ class ProfileWidget extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(onPressed: () {}, child: Text("Edit Profile"))
           ],
         ),
       ),
