@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                               MaterialPageRoute(
                                 builder: (context) => ProfileWidget(
                                   user: users[index],
+                                  //  currentUser: currentUser,
                                 ),
                               ),
                             );

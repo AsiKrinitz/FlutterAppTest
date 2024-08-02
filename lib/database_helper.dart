@@ -84,10 +84,10 @@ class DatabaseHelper {
 
   Future<List<UserModel>> getAllUsers() async {
     final Database db = await initDB();
-    // Order by createdAt DESC to get the most recent users first
+    // Order by lastEnter DESC to get the most recent users first
     List<Map<String, Object?>> result = await db.query(
       "users",
-      orderBy: "createdAt DESC",
+      orderBy: "lastEnter DESC",
     );
     return result.map((user) => UserModel.fromJson(user)).toList();
   }
@@ -96,5 +96,15 @@ class DatabaseHelper {
     final Database db = await initDB();
     return db.rawUpdate("UPDATE users set lastEnter = ?, where email =? ",
         [user.lastEnter, user.email]);
+  }
+
+  Future<void> updateUser(UserModel user) async {
+    final Database db = await initDB();
+    await db.update(
+      'users',
+      user.toJson(),
+      where: 'id = ?',
+      whereArgs: [user.id],
+    );
   }
 }
