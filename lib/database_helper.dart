@@ -6,7 +6,7 @@ class DatabaseHelper {
   final asiDB = "asiDB";
 
   String user =
-      "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT NOT NULL, lastName TEXT NOT NULL, nickName TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, phone TEXT NOT NULL, dateOfBirth TEXT NOT NULL, aboutMe TEXT NOT NULL, pictureUrl TEXT NOT NULL, lastEnter TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)";
+      "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT NOT NULL, lastName TEXT NOT NULL, nickName TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, phone TEXT NOT NULL, dateOfBirth TEXT NOT NULL, aboutMe TEXT NOT NULL, pictureUrl TEXT NOT NULL, lastEnter TEXT NOT NULL, createdAt TEXT NOT NULL)";
 
   Future<Database> initDB() async {
     final databasePath = await getDatabasesPath();

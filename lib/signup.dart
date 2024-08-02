@@ -236,6 +236,7 @@ class _SignupPageState extends State<SignupPage> {
                               dateOfBirth: dateOfBirthController.text,
                               aboutMe: aboutMeController.text,
                               pictureUrl: "pictureUrl",
+                              createdAt: DateTime.now().toString(),
                               lastEnter: DateTime.now().toString());
 
                           db.signup(user).whenComplete(
