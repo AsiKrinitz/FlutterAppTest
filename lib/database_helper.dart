@@ -59,17 +59,6 @@ class DatabaseHelper {
     }
   }
 
-  // Future<bool> login2(UserModel user) async {
-  //   final Database db = await initDB();
-  //   var result = await db.rawQuery(
-  //       "select * from users where email = '${user.email}' AND password = '${user.password}'");
-  //   if (result.isNotEmpty) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   Future<bool> login(UserModel user) async {
     final Database db = await initDB();
 
