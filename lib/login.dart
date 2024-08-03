@@ -20,8 +20,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login Page"),
+        title: Text(
+          "Login Page",
+          style: TextStyle(
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.w800),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.blue.withOpacity(0.5),
       ),
       body: Center(
         child: Form(

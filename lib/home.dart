@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/database_helper.dart';
+import 'package:test_app/edit_user_profile.dart';
 import 'package:test_app/login.dart';
 import 'package:test_app/models/userModel.dart';
 import 'package:test_app/userProfileWidget.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return (Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink.withOpacity(0.5),
+        backgroundColor: Colors.blue.withOpacity(0.5),
         centerTitle: true,
         title: Text(
           "Home Page",
@@ -92,8 +93,8 @@ class _HomePageState extends State<HomePage> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProfileWidget(
@@ -103,6 +104,11 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             );
+                            // set state - update the the state of the screen and update the all screen
+                            // accordingly
+                            setState(() {
+                              getUsers();
+                            });
                           },
                           child: Card(
                             child: ListTile(
@@ -149,6 +155,20 @@ class _HomePageState extends State<HomePage> {
               }
             },
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileWidget(
+                    user: currentUser!,
+                    currentUser: currentUser!,
+                  ),
+                ),
+              );
+            },
+            child: Text("my profile"),
+          )
         ],
       ),
     ));

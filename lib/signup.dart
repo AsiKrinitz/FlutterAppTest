@@ -45,12 +45,12 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       // backgroundColor: Colors.white.withOpacity(0.5),
       appBar: AppBar(
+        backgroundColor: Colors.blue.withOpacity(0.5),
         title: const Text(
           "Signup Page",
           style: TextStyle(
               decoration: TextDecoration.underline,
-              color: Colors.indigo,
-              fontWeight: FontWeight.w700),
+              fontWeight: FontWeight.w800),
         ),
         centerTitle: true,
       ),
@@ -65,7 +65,7 @@ class _SignupPageState extends State<SignupPage> {
                   Text(
                     "Signup Form",
                     style: TextStyle(
-                        fontSize: 40,
+                        fontSize: 30,
                         color: const Color.fromARGB(255, 228, 206, 7),
                         decoration: TextDecoration.underline),
                   ),

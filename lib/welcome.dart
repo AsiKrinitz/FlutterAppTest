@@ -16,14 +16,13 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     log("refresh");
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 203, 220, 1).withOpacity(0.8),
       appBar: AppBar(
+        backgroundColor: Colors.blue.withOpacity(0.5),
         title: Text(
           "Welcome Page",
           style: TextStyle(
-              color: Colors.blue.withOpacity(0.8),
               decoration: TextDecoration.underline,
-              fontWeight: FontWeight.w700),
+              fontWeight: FontWeight.w800),
         ),
         centerTitle: true,
       ),

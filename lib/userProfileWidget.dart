@@ -20,7 +20,14 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Profile"),
+        backgroundColor: Colors.blue.withOpacity(0.5),
+        centerTitle: true,
+        title: Text(
+          "User Profile",
+          style: TextStyle(
+              fontWeight: FontWeight.w800,
+              decoration: TextDecoration.underline),
+        ),
         leading: IconButton(
           icon: Icon(Icons.cancel),
           onPressed: () {
@@ -122,6 +129,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         builder: (context) =>
                             EditProfilePage(user: widget.user),
                       ),
+                      // when we update the user when we return from EditProfilePage we are updating
+                      // user on current page.
                     ).then((updatedUser) {
                       if (updatedUser != null) {
                         setState(() {

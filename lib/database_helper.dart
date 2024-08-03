@@ -44,7 +44,7 @@ class DatabaseHelper {
       where: 'email = ?',
       whereArgs: [email],
     );
-    return result.isNotEmpty;
+    return result.isNotEmpty; // if email exist return true else return false
   }
 
   Future<String?> signup(UserModel user) async {
@@ -78,10 +78,12 @@ class DatabaseHelper {
         where: 'email = ?',
         whereArgs: [user.email],
       );
+
       // Store user info in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-          'currentUser', user.email); // Store email as an identifier
+      // Store email as an identifier in the cache memory/preferences
+      // as key and value when current user is the key and the value is the email.
+      await prefs.setString('currentUser', user.email);
 
       return true;
     }
@@ -95,13 +97,17 @@ class DatabaseHelper {
       "users",
       orderBy: "lastEnter DESC",
     );
+    // deserialize the object from json to UserModel
     return result.map((user) => UserModel.fromJson(user)).toList();
   }
 
   Future<UserModel?> getCurrentUser() async {
+    // here we are getting the current user email that we store in a cache meomory
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString('currentUser');
 
+    // here we check if email is not null then we will pass this email to the users table
+    // to see if there is any matching email, if the email is match with any user it will return the user.
     if (email != null) {
       final Database db = await initDB();
       List<Map<String, dynamic>> users = await db.query(
