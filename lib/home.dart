@@ -83,15 +83,15 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfileWidget(
-                                  user: users[index],
-                                  //  currentUser: currentUser,
-                                ),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ProfileWidget(
+                            //       user: users[index],
+                            //       //  currentUser: currentUser,
+                            //     ),
+                            //   ),
+                            // );
                           },
                           child: Card(
                             child: ListTile(
