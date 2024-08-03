@@ -71,9 +71,9 @@ class _HomePageState extends State<HomePage> {
             future: users,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                return Center(
+                return const Center(
                   child: Text("no data"),
                 );
               } else if (snapshot.hasError) {
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                                       child: Container(
                                         width: 80, // Circle diameter
                                         height: 80,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             image: AssetImage(
