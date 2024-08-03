@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:test_app/models/userModel.dart';
 import 'package:test_app/database_helper.dart'; // Import the DatabaseHelper
 
@@ -50,6 +51,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final Uint8List imageBytes = await image.readAsBytes();
+      setState(() {
+        _profileImage = imageBytes;
+      });
+    }
+  }
+
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       final db = DatabaseHelper();
@@ -65,7 +77,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         aboutMe: aboutMeController.text,
         pictureUrl: _profileImage,
         lastEnter: widget.user.lastEnter, // Keep the lastEnter value
-        // createdAt: widget.user.createdAt,
       );
       await db.updateUser(updatedUser); // Update user in the database
 
@@ -152,10 +163,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 },
               ),
               SizedBox(height: 20),
+              GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: _profileImage != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.memory(
+                            _profileImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Image.asset('lib/assets/goodLife.jpg'),
+                ),
+              ),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _updateProfile,
                 child: Text('Update Profile'),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),

@@ -1,4 +1,5 @@
 import "package:path/path.dart";
+import "package:shared_preferences/shared_preferences.dart";
 import "package:sqflite/sqflite.dart";
 import "package:test_app/models/userModel.dart";
 
@@ -77,6 +78,11 @@ class DatabaseHelper {
         where: 'email = ?',
         whereArgs: [user.email],
       );
+      // Store user info in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+          'currentUser', user.email); // Store email as an identifier
+
       return true;
     }
     return false;
@@ -90,6 +96,25 @@ class DatabaseHelper {
       orderBy: "lastEnter DESC",
     );
     return result.map((user) => UserModel.fromJson(user)).toList();
+  }
+
+  Future<UserModel?> getCurrentUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('currentUser');
+
+    if (email != null) {
+      final Database db = await initDB();
+      List<Map<String, dynamic>> users = await db.query(
+        'users',
+        where: 'email = ?',
+        whereArgs: [email],
+      );
+
+      if (users.isNotEmpty) {
+        return UserModel.fromJson(users.first);
+      }
+    }
+    return null;
   }
 
   updateUserLastEnter(UserModel user) async {

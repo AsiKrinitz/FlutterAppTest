@@ -16,17 +16,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<UserModel>> users;
+  UserModel? currentUser;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUsers();
+    _loadCurrentUser();
   }
 
   getUsers() async {
     final db = DatabaseHelper();
     users = db.getAllUsers();
     setState(() {});
+  }
+
+  void _loadCurrentUser() async {
+    DatabaseHelper db = DatabaseHelper();
+    UserModel? user = await db.getCurrentUser();
+    setState(() {
+      currentUser = user;
+    });
   }
 
   @override
@@ -83,15 +93,16 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ProfileWidget(
-                            //       user: users[index],
-                            //       //  currentUser: currentUser,
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfileWidget(
+                                  user: users[index],
+                                  currentUser: currentUser ??
+                                      UserModel(email: '', password: ''),
+                                ),
+                              ),
+                            );
                           },
                           child: Card(
                             child: ListTile(
