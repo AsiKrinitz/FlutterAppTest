@@ -80,18 +80,11 @@ class _SignupPageState extends State<SignupPage> {
               key: formKey,
               child: Column(
                 children: [
-                  const Text(
-                    "Signup Form",
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: const Color.fromARGB(255, 228, 206, 7),
-                        decoration: TextDecoration.underline),
-                  ),
                   TextFormField(
                     controller: firstNameController,
                     decoration: const InputDecoration(
                       label: Text("first name"),
-                      hintText: "Asi",
+                      hintText: "your name",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
@@ -127,7 +120,7 @@ class _SignupPageState extends State<SignupPage> {
                     controller: nickNameController,
                     decoration: const InputDecoration(
                       label: Text("nickName"),
-                      hintText: "Asi123",
+                      hintText: "nick name",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -264,8 +257,6 @@ class _SignupPageState extends State<SignupPage> {
                   ElevatedButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        print("form is valid");
-
                         final db = DatabaseHelper();
                         UserModel user = UserModel(
                             firstName: firstNameController.text,
@@ -284,7 +275,8 @@ class _SignupPageState extends State<SignupPage> {
                         if (result == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text('You signed up successfully')),
+                              content: Text('You signed up successfully'),
+                            ),
                           );
                           Navigator.push(
                             context,
@@ -297,7 +289,7 @@ class _SignupPageState extends State<SignupPage> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: const Text("Signup Failed"),
-                                content: const Text("something went worng..."),
+                                content: Text(result),
                                 actions: <Widget>[
                                   ElevatedButton(
                                     child: const Text("OK"),

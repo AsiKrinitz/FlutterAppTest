@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      final db = DatabaseHelper();
+                      final db = DatabaseHelper(); // db is instance of the databaseHelper class
                       UserModel user = UserModel(
                         email: emailController.text,
                         password: passwordController.text,

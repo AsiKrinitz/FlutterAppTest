@@ -15,6 +15,15 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
+  String _formatDate(String dateString) {
+    try {
+      DateTime date = DateTime.parse(dateString);
+      return DateFormat('MMMM d, y h:mm a').format(date);
+    } catch (e) {
+      return "Invalid date";
+    }
+  }
+
   // Add currentUser to check for editing rights
   @override
   Widget build(BuildContext context) {
@@ -22,7 +31,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       appBar: AppBar(
         backgroundColor: Colors.blue.withOpacity(0.5),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "User Profile",
           style: TextStyle(
               fontWeight: FontWeight.w800,
@@ -165,14 +174,5 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         ],
       ),
     );
-  }
-
-  String _formatDate(String dateString) {
-    try {
-      DateTime date = DateTime.parse(dateString);
-      return DateFormat('MMMM d, y h:mm a').format(date);
-    } catch (e) {
-      return "Invalid date";
-    }
   }
 }

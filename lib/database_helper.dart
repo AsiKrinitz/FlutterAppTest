@@ -103,6 +103,7 @@ class DatabaseHelper {
 
   Future<UserModel?> getCurrentUser() async {
     // here we are getting the current user email that we store in a cache meomory
+    // like local storage in web
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString('currentUser');
 

@@ -62,6 +62,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        dateOfBirthController.text = "${picked.toLocal()}".split(' ')[0];
+      });
+    }
+  }
+
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       final db = DatabaseHelper();
@@ -91,7 +105,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       appBar: AppBar(
         backgroundColor: Colors.blue.withOpacity(0.5),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Edit Profile',
           style: TextStyle(
               fontWeight: FontWeight.w800,
@@ -149,12 +163,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return null;
                 },
               ),
+              SizedBox(
+                height: 10,
+              ),
               TextFormField(
                 controller: dateOfBirthController,
-                decoration: InputDecoration(labelText: 'Date of Birth'),
+                decoration: const InputDecoration(
+                  label: Text("date of birth"),
+                  hintText: "01/01/1990",
+                  border: OutlineInputBorder(),
+                ),
+                readOnly: true,
+                onTap: () => _selectDate(context),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your date of birth';
+                    return "this field is required";
                   }
                   return null;
                 },

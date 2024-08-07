@@ -18,9 +18,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<UserModel>> users;
   UserModel? currentUser;
+  // ngOnInit on the 1st time rendering do all methods belows
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getUsers();
     _loadCurrentUser();
@@ -40,13 +40,24 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  int _calculateAge(String dateString) {
+    final birthDate = DateTime.parse(dateString);
+    final today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+    return age;
+  }
+
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.withOpacity(0.5),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Home Page",
           style: TextStyle(
               decoration: TextDecoration.underline,
@@ -54,9 +65,9 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
-              // Perform logout and navigate to login page
+              // Perform logout and navigate to login page remove all other pages we have been
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
@@ -104,8 +115,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             );
-                            // set state - update the the state of the screen and update the all screen
-                            // accordingly
+                            // set state - update the the state of the screen and update the all screen accordingly
                             setState(() {
                               getUsers();
                             });
@@ -173,19 +183,4 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
-}
-
-void test() {
-  log("hey");
-}
-
-int _calculateAge(String dateString) {
-  final birthDate = DateTime.parse(dateString);
-  final today = DateTime.now();
-  int age = today.year - birthDate.year;
-  if (today.month < birthDate.month ||
-      (today.month == birthDate.month && today.day < birthDate.day)) {
-    age--;
-  }
-  return age;
 }
