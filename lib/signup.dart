@@ -25,9 +25,12 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   final aboutMeController = TextEditingController();
   final pictureController = TextEditingController();
+
+  // type of Uint8List means list of unsigned 8-bit integers
+  // often used to store byte data, here we gona save the picture
   Uint8List? _profileImage;
 
-  /// Pick the image from gallery and store in [_profileImage] as bytes
+  // Pick the image from gallery and store in [_profileImage] as bytes
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -36,6 +39,21 @@ class _SignupPageState extends State<SignupPage> {
       final bytes = await pickedFile.readAsBytes();
       setState(() {
         _profileImage = bytes;
+      });
+    }
+  }
+
+  // allow the data picker
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        dateOfBirthController.text = "${picked.toLocal()}".split(' ')[0];
       });
     }
   }
@@ -62,7 +80,7 @@ class _SignupPageState extends State<SignupPage> {
               key: formKey,
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "Signup Form",
                     style: TextStyle(
                         fontSize: 30,
@@ -71,16 +89,12 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   TextFormField(
                     controller: firstNameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("first name"),
                       hintText: "Asi",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(
-                          r'[a-zA-Z\s]')), // Allow only letters and spaces
-                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "this field is required";
@@ -88,21 +102,17 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: lastNameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("last name"),
                       hintText: "last name",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(
-                          r'[a-zA-Z\s]')), // Allow only letters and spaces
-                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "this field is required";
@@ -110,12 +120,12 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: nickNameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("nickName"),
                       hintText: "Asi123",
                       border: OutlineInputBorder(),
@@ -128,12 +138,12 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: emailContorller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("email"),
                       hintText: "exampleEmail@gmail.com",
                       border: OutlineInputBorder(),
@@ -146,12 +156,12 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: passwordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("password"),
                       hintText: "",
                       border: OutlineInputBorder(),
@@ -166,12 +176,12 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: phoneController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         label: Text("phone"),
                         hintText: "05212345678",
                         border: OutlineInputBorder()),
@@ -183,12 +193,12 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: dateOfBirthController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("date of birth"),
                       hintText: "01/01/1990",
                       border: OutlineInputBorder(),
@@ -202,12 +212,12 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: aboutMeController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("about me"),
                       hintText: "tell about yourself shortly",
                       border: OutlineInputBorder(),
@@ -220,7 +230,7 @@ class _SignupPageState extends State<SignupPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   GestureDetector(
@@ -248,7 +258,7 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
@@ -273,7 +283,7 @@ class _SignupPageState extends State<SignupPage> {
 
                         if (result == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content: Text('You signed up successfully')),
                           );
                           Navigator.push(
@@ -282,8 +292,22 @@ class _SignupPageState extends State<SignupPage> {
                                 builder: (context) => LoginPage()),
                           );
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(result)),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Signup Failed"),
+                                content: const Text("something went worng..."),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    child: const Text("OK"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         }
                       }
@@ -293,12 +317,12 @@ class _SignupPageState extends State<SignupPage> {
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         "already have an account? ",
                         style: TextStyle(fontSize: 18),
                       ),
@@ -313,7 +337,7 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "login now",
                           style: TextStyle(
                               color: const Color.fromARGB(255, 5, 83, 148),
@@ -329,20 +353,5 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
-  }
-
-// allow the data picker
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        dateOfBirthController.text = "${picked.toLocal()}".split(' ')[0];
-      });
-    }
   }
 }
