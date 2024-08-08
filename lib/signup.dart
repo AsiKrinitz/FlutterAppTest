@@ -30,19 +30,6 @@ class _SignupPageState extends State<SignupPage> {
   // often used to store byte data, here we gona save the picture
   Uint8List? _profileImage;
 
-  // Pick the image from gallery and store in [_profileImage] as bytes
-  // Future<void> _pickImage() async {
-  //   final picker = ImagePicker();
-  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-  //   if (pickedFile != null) {
-  //     final bytes = await pickedFile.readAsBytes();
-  //     setState(() {
-  //       _profileImage = bytes;
-  //     });
-  //   }
-  // }
-
   Future<void> _pickImage() async {
     // Pick image from gallery or camera
     final pickedFile =
