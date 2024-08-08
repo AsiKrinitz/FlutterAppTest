@@ -109,10 +109,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     children: [
                       _buildInfoRow(
                           Icons.person, "ID", widget.user.id.toString()),
-                      _buildInfoRow(Icons.person_outline, "First Name",
-                          widget.user.firstName ?? ""),
-                      _buildInfoRow(Icons.person_outline, "Last Name",
-                          widget.user.lastName ?? ""),
+                      _buildInfoRow(
+                          Icons.person_outline, "Name", widget.user.name ?? ""),
                       _buildInfoRow(
                           Icons.email, "Email", widget.user.email ?? ""),
                       _buildInfoRow(

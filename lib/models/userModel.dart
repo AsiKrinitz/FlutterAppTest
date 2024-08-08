@@ -4,8 +4,7 @@ import 'dart:typed_data';
 
 class UserModel {
   int? id;
-  String? firstName;
-  String? lastName;
+  String? name;
   String? nickName;
   String email;
   String password;
@@ -18,8 +17,7 @@ class UserModel {
 
   UserModel(
       {this.id,
-      this.firstName,
-      this.lastName,
+      this.name,
       this.nickName,
       required this.email,
       required this.password,
@@ -32,8 +30,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
+        name: json["name"],
         nickName: json["nickName"],
         email: json["email"],
         password: json["password"],
@@ -49,8 +46,7 @@ class UserModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "firstName": firstName,
-        "lastName": lastName,
+        "name": name,
         "nickName": nickName,
         "email": email,
         "password": password,

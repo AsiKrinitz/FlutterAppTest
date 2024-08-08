@@ -16,8 +16,8 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController firstNameController;
-  late TextEditingController lastNameController;
+  late TextEditingController nameController;
+
   late TextEditingController nickNameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
@@ -28,8 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    firstNameController = TextEditingController(text: widget.user.firstName);
-    lastNameController = TextEditingController(text: widget.user.lastName);
+    nameController = TextEditingController(text: widget.user.name);
     nickNameController = TextEditingController(text: widget.user.nickName);
     emailController = TextEditingController(text: widget.user.email);
     phoneController = TextEditingController(text: widget.user.phone);
@@ -41,8 +40,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
+    nameController.dispose();
     nickNameController.dispose();
     emailController.dispose();
     phoneController.dispose();
@@ -52,12 +50,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      final Uint8List imageBytes = await image.readAsBytes();
+    // Pick image from gallery or camera
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Check the file size
+      final fileSize = await pickedFile.length();
+      final maxSize = 3.5 * 1024 * 1024; // 3.5 MB in bytes
+
+      if (fileSize > maxSize) {
+        // Show an error message if the image is too large
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'The selected image is too large. Please choose an image smaller than 3.5 MB.'),
+          ),
+        );
+        return;
+      }
+      // Load the image into memory
+      final bytes = await pickedFile.readAsBytes();
       setState(() {
-        _profileImage = imageBytes;
+        _profileImage = bytes;
       });
     }
   }
@@ -81,8 +96,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final db = DatabaseHelper();
       UserModel updatedUser = UserModel(
         id: widget.user.id,
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
+        name: nameController.text,
         nickName: nickNameController.text,
         email: widget.user.email,
         password: widget.user.password,
@@ -119,21 +133,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: ListView(
             children: [
               TextFormField(
-                controller: firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
+                    return 'Please enter your  name';
                   }
                   return null;
                 },
@@ -156,6 +160,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               TextFormField(
                 controller: phoneController,
                 decoration: InputDecoration(labelText: 'Phone'),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app/database_helper.dart';
 import 'package:test_app/edit_user_profile.dart';
 import 'package:test_app/login.dart';
@@ -66,7 +67,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
+            onPressed: () async {
+              // Clear SharedPreferences
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
               // Perform logout and navigate to login page remove all other pages we have been
               Navigator.pushAndRemoveUntil(
                 context,

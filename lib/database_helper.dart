@@ -9,8 +9,7 @@ class DatabaseHelper {
   String user = """
     CREATE TABLE users (
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
-      firstName TEXT NOT NULL, 
-      lastName TEXT NOT NULL, 
+      name TEXT NOT NULL, 
       nickName TEXT NOT NULL, 
       email TEXT NOT NULL UNIQUE, 
       password TEXT NOT NULL, 
@@ -66,6 +65,7 @@ class DatabaseHelper {
     // Fetch the user based on email and password
     List<Map<String, dynamic>> users = await db.query(
       'users',
+      columns: ['email', 'password'], // Select only the necessary columns
       where: 'email = ? AND password = ?',
       whereArgs: [user.email, user.password],
     );

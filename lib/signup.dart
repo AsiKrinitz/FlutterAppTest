@@ -16,7 +16,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final formKey = GlobalKey<FormState>();
 
-  final firstNameController = TextEditingController();
+  final nameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailContorller = TextEditingController();
   final nickNameController = TextEditingController();
@@ -31,11 +31,39 @@ class _SignupPageState extends State<SignupPage> {
   Uint8List? _profileImage;
 
   // Pick the image from gallery and store in [_profileImage] as bytes
+  // Future<void> _pickImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  //   if (pickedFile != null) {
+  //     final bytes = await pickedFile.readAsBytes();
+  //     setState(() {
+  //       _profileImage = bytes;
+  //     });
+  //   }
+  // }
+
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    // Pick image from gallery or camera
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      // Check the file size
+      final fileSize = await pickedFile.length();
+      final maxSize = 3.5 * 1024 * 1024; // 3.5 MB in bytes
+
+      if (fileSize > maxSize) {
+        // Show an error message if the image is too large
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'The selected image is too large. Please choose an image smaller than 3.5 MB.'),
+          ),
+        );
+        return;
+      }
+      // Load the image into memory
       final bytes = await pickedFile.readAsBytes();
       setState(() {
         _profileImage = bytes;
@@ -81,28 +109,10 @@ class _SignupPageState extends State<SignupPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    controller: firstNameController,
+                    controller: nameController,
                     decoration: const InputDecoration(
-                      label: Text("first name"),
+                      label: Text("name"),
                       hintText: "your name",
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "this field is required";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: lastNameController,
-                    decoration: const InputDecoration(
-                      label: Text("last name"),
-                      hintText: "last name",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
@@ -175,9 +185,10 @@ class _SignupPageState extends State<SignupPage> {
                   TextFormField(
                     controller: phoneController,
                     decoration: const InputDecoration(
-                        label: Text("phone"),
-                        hintText: "05212345678",
-                        border: OutlineInputBorder()),
+                      label: Text("phone"),
+                      hintText: "05212345678",
+                      border: OutlineInputBorder(),
+                    ),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -259,8 +270,7 @@ class _SignupPageState extends State<SignupPage> {
                       if (formKey.currentState!.validate()) {
                         final db = DatabaseHelper();
                         UserModel user = UserModel(
-                            firstName: firstNameController.text,
-                            lastName: lastNameController.text,
+                            name: nameController.text,
                             nickName: nickNameController.text,
                             email: emailContorller.text,
                             password: passwordController.text,
